@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { photosAPI } from '../services/api';
 import './Manager.css';
 
@@ -21,9 +21,9 @@ const PhotosManager = () => {
 
   useEffect(() => {
     fetchPhotos();
-  }, []);
+  }, [fetchPhotos]);
 
-  const fetchPhotos = async () => {
+  const fetchPhotos = useCallback(async () => {
     try {
       setLoading(true);
       const response = await photosAPI.getAll();
@@ -53,7 +53,7 @@ const PhotosManager = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [defaultCategories]);
 
   const resetForm = () => {
     setFile(null);

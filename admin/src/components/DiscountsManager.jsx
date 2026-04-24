@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { discountsAPI } from '../services/api';
 import './Manager.css';
 
@@ -13,9 +13,9 @@ const DiscountsManager = () => {
 
   useEffect(() => {
     fetchDiscounts();
-  }, []);
+  }, [fetchDiscounts]);
 
-  const fetchDiscounts = async () => {
+  const fetchDiscounts = useCallback(async () => {
     try {
       setLoading(true);
       const response = await discountsAPI.getAll();
@@ -25,7 +25,7 @@ const DiscountsManager = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 
 const ADMIN_EMAIL = 'royaldesicrew@gmail.com';
-const SENDER_EMAIL = 'no-reply@royaldesicrew.com';
+const SENDER_EMAIL = process.env.RESEND_SENDER_EMAIL || 'no-reply@royaldesicrew.com';
 
 // Helper function to get Resend instance
 const getResend = () => {

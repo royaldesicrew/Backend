@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { blogsAPI } from '../services/api';
 import './Manager.css';
 
@@ -13,9 +13,9 @@ const BlogsManager = () => {
 
   useEffect(() => {
     fetchBlogs();
-  }, []);
+  }, [fetchBlogs]);
 
-  const fetchBlogs = async () => {
+  const fetchBlogs = useCallback(async () => {
     try {
       setLoading(true);
       const response = await blogsAPI.getAll();
@@ -25,7 +25,7 @@ const BlogsManager = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

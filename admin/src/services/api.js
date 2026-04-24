@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 // Get backend URL from environment or use localhost for development
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+// Get backend URL from environment or use appropriate defaults for dev/prod
+const API_BASE_URL = process.env.REACT_APP_API_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? 'https://backend-six-theta-99.vercel.app' 
+    : 'http://localhost:5000');
 
 const api = axios.create({
   baseURL: `${API_BASE_URL}/api`,
