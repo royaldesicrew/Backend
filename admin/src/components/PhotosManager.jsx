@@ -50,7 +50,7 @@ const PhotosManager = () => {
     } finally {
       setLoading(false);
     }
-  }, [defaultCategories]);
+  }, []);
 
   useEffect(() => {
     fetchPhotos();
