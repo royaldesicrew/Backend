@@ -1,13 +1,6 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "build",
-  "env": {
-    "REACT_APP_API_URL": "@react_app_api_url"
-  },
+  "version": 2,
   "rewrites": [
-    {
-      "source": "/admin/(.*)",
-      "destination": "/admin/index.html"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

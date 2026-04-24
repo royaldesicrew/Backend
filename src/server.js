@@ -26,14 +26,14 @@ app.use(cors({
       'http://127.0.0.1:3000',
       'http://127.0.0.1:3001',
       'http://127.0.0.1:8000',
-      'http://192.168.0.106:3001',
-      'http://192.168.0.106:8000',
       'https://royaldesicrew.com',
-      'https://www.royaldesicrew.com'
+      'https://www.royaldesicrew.com',
+      'https://marcosh2002.github.io'
     ];
     
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow requests with no origin (like mobile apps) 
+    // or origins that end with .vercel.app
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -55,13 +55,12 @@ app.options('*', cors({
       'http://127.0.0.1:3000',
       'http://127.0.0.1:3001',
       'http://127.0.0.1:8000',
-      'http://192.168.0.106:3001',
-      'http://192.168.0.106:8000',
       'https://royaldesicrew.com',
-      'https://www.royaldesicrew.com'
+      'https://www.royaldesicrew.com',
+      'https://marcosh2002.github.io'
     ];
     
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
