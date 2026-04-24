@@ -4,8 +4,9 @@ import './Manager.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
+const defaultCategories = ['Luxury Weddings', 'Corporate Events', 'Birthday Celebrations', 'Decor and Design', 'Background Images'];
+
 const PhotosManager = () => {
-  const defaultCategories = ['Luxury Weddings', 'Corporate Events', 'Birthday Celebrations', 'Decor and Design', 'Background Images'];
   const [photosByCategory, setPhotosByCategory] = useState({});
   const [allCategories, setAllCategories] = useState(defaultCategories);
   const [loading, setLoading] = useState(true);
