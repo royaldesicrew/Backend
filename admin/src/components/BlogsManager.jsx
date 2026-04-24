@@ -11,10 +11,6 @@ const BlogsManager = () => {
   const [content, setContent] = useState('');
   const [author, setAuthor] = useState('');
 
-  useEffect(() => {
-    fetchBlogs();
-  }, [fetchBlogs]);
-
   const fetchBlogs = useCallback(async () => {
     try {
       setLoading(true);
@@ -26,6 +22,10 @@ const BlogsManager = () => {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, [fetchBlogs]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

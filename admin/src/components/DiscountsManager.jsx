@@ -11,10 +11,6 @@ const DiscountsManager = () => {
   const [percentage, setPercentage] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
 
-  useEffect(() => {
-    fetchDiscounts();
-  }, [fetchDiscounts]);
-
   const fetchDiscounts = useCallback(async () => {
     try {
       setLoading(true);
@@ -26,6 +22,10 @@ const DiscountsManager = () => {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    fetchDiscounts();
+  }, [fetchDiscounts]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

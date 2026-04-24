@@ -19,10 +19,6 @@ const PhotosManager = () => {
   const [selectedPhotos, setSelectedPhotos] = useState(new Set());
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    fetchPhotos();
-  }, [fetchPhotos]);
-
   const fetchPhotos = useCallback(async () => {
     try {
       setLoading(true);
@@ -54,6 +50,10 @@ const PhotosManager = () => {
       setLoading(false);
     }
   }, [defaultCategories]);
+
+  useEffect(() => {
+    fetchPhotos();
+  }, [fetchPhotos]);
 
   const resetForm = () => {
     setFile(null);
