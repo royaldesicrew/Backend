@@ -22,10 +22,6 @@ const allowedOrigins = [
   'http://localhost:3001',
   'http://localhost:5500',
   'http://localhost:8000',
-  'http://127.0.0.1:3000',
-  'http://127.0.0.1:3001',
-  'http://127.0.0.1:5500',
-  'http://127.0.0.1:8000',
   'https://royaldesicrew.com',
   'https://www.royaldesicrew.com',
   'https://marcosh2002.github.io',
@@ -34,33 +30,31 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: function(origin, callback) {
-    // In development, allow all origins for easier debugging
-    if (process.env.NODE_ENV !== 'production') {
+    // In development, allow all origins
+    if (process.env.NODE_ENV !== 'production' || !origin) {
       return callback(null, true);
     }
     
-    // Allow requests with no origin (like mobile apps) 
-    // or origins that end with .vercel.app
-    const isVercelApp = origin && (origin.endsWith('.vercel.app') || origin.endsWith('.vercel.app/'));
-    const isAllowed = !origin || allowedOrigins.includes(origin) || isVercelApp;
+    // Check if origin is in the allowed list or is a Vercel subdomain
+    const isAllowed = allowedOrigins.includes(origin) || 
+                     origin.endsWith('.vercel.app') || 
+                     origin.endsWith('.vercel.app/');
     
     if (isAllowed) {
       callback(null, true);
     } else {
       console.warn(`⚠️ CORS blocked for origin: ${origin}`);
-      // Returning null, false instead of an error to avoid breaking the request flow
-      // but still blocking the CORS access in the browser
       callback(null, false);
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
   optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Use same options for preflight
+app.options('*', cors(corsOptions)); // Explicitly handle preflight for all routes
 
 app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -103,6 +97,15 @@ app.get('/placeholder/:width/:height', (req, res) => {
   res.set('Content-Type', 'image/svg+xml');
   res.set('Cache-Control', 'public, max-age=3600');
   res.send(svg);
+});
+
+// Root route for verification
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'online', 
+    message: 'Royal Desi Crew API is running',
+    environment: process.env.NODE_ENV
+  });
 });
 
 // Routes
