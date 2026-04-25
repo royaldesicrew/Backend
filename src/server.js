@@ -28,7 +28,8 @@ const allowedOrigins = [
   'http://127.0.0.1:8000',
   'https://royaldesicrew.com',
   'https://www.royaldesicrew.com',
-  'https://marcosh2002.github.io'
+  'https://marcosh2002.github.io',
+  'https://admin-app-kohl-ten.vercel.app'
 ];
 
 const corsOptions = {
