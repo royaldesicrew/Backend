@@ -17,60 +17,44 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 // Middleware - CORS must be first
-app.use(cors({
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:5500',
+  'http://localhost:8000',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:3001',
+  'http://127.0.0.1:5500',
+  'http://127.0.0.1:8000',
+  'https://royaldesicrew.com',
+  'https://www.royaldesicrew.com',
+  'https://marcosh2002.github.io'
+];
+
+const corsOptions = {
   origin: function(origin, callback) {
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:8000',
-      'http://127.0.0.1:3000',
-      'http://127.0.0.1:3001',
-      'http://127.0.0.1:8000',
-      'https://royaldesicrew.com',
-      'https://www.royaldesicrew.com',
-      'https://marcosh2002.github.io'
-    ];
+    // In development, allow all origins for easier debugging
+    if (process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
     
     // Allow requests with no origin (like mobile apps) 
     // or origins that end with .vercel.app
     if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
       callback(null, true);
     } else {
+      console.warn(`⚠️ CORS blocked for origin: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   optionsSuccessStatus: 200
-}));
+};
 
-// Handle preflight requests
-app.options('*', cors({
-  origin: function(origin, callback) {
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:8000',
-      'http://127.0.0.1:3000',
-      'http://127.0.0.1:3001',
-      'http://127.0.0.1:8000',
-      'https://royaldesicrew.com',
-      'https://www.royaldesicrew.com',
-      'https://marcosh2002.github.io'
-    ];
-    
-    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200
-}));
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Use same options for preflight
 
 app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
