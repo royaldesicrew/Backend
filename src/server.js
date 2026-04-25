@@ -41,11 +41,16 @@ const corsOptions = {
     
     // Allow requests with no origin (like mobile apps) 
     // or origins that end with .vercel.app
-    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+    const isVercelApp = origin && (origin.endsWith('.vercel.app') || origin.endsWith('.vercel.app/'));
+    const isAllowed = !origin || allowedOrigins.includes(origin) || isVercelApp;
+    
+    if (isAllowed) {
       callback(null, true);
     } else {
       console.warn(`⚠️ CORS blocked for origin: ${origin}`);
-      callback(new Error('Not allowed by CORS'));
+      // Returning null, false instead of an error to avoid breaking the request flow
+      // but still blocking the CORS access in the browser
+      callback(null, false);
     }
   },
   credentials: true,
